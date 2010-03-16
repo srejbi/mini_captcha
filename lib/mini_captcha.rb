@@ -7,7 +7,7 @@ require 'digest'
 # requiring the library!)
 #
 module MiniCaptcha
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
 
   # <tt>@@image_format</tt> - a valid file extension, eg. gif,jpg,png
   mattr_accessor :image_format
@@ -41,6 +41,10 @@ module MiniCaptcha
   mattr_accessor :text_properties
   @@text_properties = "self.font_family = 'arial'; self.gravity = Magick::CenterGravity; self.pointsize = 48; self.stroke = 'transparent'; self.fill = 'black'; self.font_weight = Magick::BoldWeight"
 
+  # <tt>timeout_minutes</tt> - minutes allowed to return the captcha response; 0 means infinite, recommended for development only
+  mattr_accessor :timeout_minutes
+  @@timeout_minutes = 30
+
   # <tt>MiniCaptcha::MiniCaptchaClass</tt>
   # read only attributes:
   # <tt>image</tt> - path to the generated token image file
@@ -72,12 +76,18 @@ module MiniCaptcha
     # checks a token against a hash
     # if they match, true is returned, false otherwise
     def check(hashin, token)
-      challenge = generate_hash(token)
+      tnow = Time.now
       @hash = hashin
-      @image = Rails.root.join(MiniCaptcha.image_dir, "#{@hash}.#{MiniCaptcha.image_format}")
-      # get rid of the hash file (if exists)
-      cleanup
-      challenge == @hash
+      digest, timestamp = @hash.split("___")
+      tthen = Time.parse(timestamp)
+      if (MiniCaptcha.timeout_minutes == 0 || (tnow - tthen)/60 <= MiniCaptcha.timeout_minutes)
+        challenge = generate_hash(token, tthen)
+
+        @image = Rails.root.join(MiniCaptcha.image_dir, "#{@hash}.#{MiniCaptcha.image_format}")
+        # get rid of the hash file (if exists)
+        cleanup
+        challenge == @hash
+      end
     end
 
     protected
@@ -123,8 +133,9 @@ module MiniCaptcha
     # generates a salted MD5 hash of a given token
     # parameters:
     # <tt>token</tt> - string containing the text to be hashed
-    def generate_hash(token)
-      hashvalue = Digest::MD5.hexdigest("*#{MiniCaptcha.salt}__#{token}*")
+    # <tt>timestamp</tt> - Time of hash creation (submit hash timestamp when checking, omit when generating a new captcha)
+    def generate_hash(token, timestamp = Time::now)
+      hashvalue = "#{Digest::MD5.hexdigest("*#{MiniCaptcha.salt}__#{token}*")}___#{timestamp.strftime("%Y%m%d%H%M%S")}"
     end
   end
 
