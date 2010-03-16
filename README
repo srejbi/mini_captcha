@@ -5,33 +5,36 @@ Minimalistic captcha plugin for rails projects.
 Install and integrate to the existing code:
 [0) install RMagick and Digest -- if not yet installed]
 
-1) add the following lines to your application controller:
+1) install mini_captcha:
+# script/plugin install git@github.com:srejbi/mini_captcha.git
+
+2) add the following lines to your application controller:
 
  require 'vendor/plugins/mini_captcha/lib/mini_captcha'
- include MilkyCaptcha::ControllerHelpers
+ include MiniCaptcha::ControllerHelpers
 
-2) add a map to the MilkyCaptcha controller for the Milky Captcha image display
+3) add a map to the MiniCaptcha controller for the MiniCaptcha image display
 map.mini_captcha '/mini_captcha/:action', :controller => 'mini_captcha', :action => 'show_image'
 
-3) add a div like this to any view you want to protect with MilkyCaptcha from spam:
+4) add a div like this to any view you want to protect with MiniCaptcha from spam:
   ... (your page & form)...
   <div class="..."><%= show_mini_captcha  %> </div>
   ... (your page) ....
 
-4) update the processing controller similarly to the following block:
+5) update the processing controller similarly to the following block:
 
  if @form.valid?    your original validation
-       if mini_captcha_valid?  extend it with checking the MilkyCaptchaChallenge
+       if mini_captcha_valid?  extend it with checking the MiniCaptchaChallenge
          do whatever...
          flash[:notice] = 'Your form input was correct.'
          redirect as you wish
-       else                     belongs to your new validation of MilkyCaptchaChallenge (failure branch)
-         flash[:error] = 'Failed MilkyCaptcha Challenge.'
+       else                     belongs to your new validation of MiniCaptchaChallenge (failure branch)
+         flash[:error] = 'Failed MiniCaptcha Challenge.'
          punish the 'bot, piss off the user (just kidding ;))
-       end                      end of yout new block for MilkyCaptchaChallenge failure
+       end                      end of yout new block for MiniCaptchaChallenge failure
      end
 
-5) enjoy getting less messages, more real information! :-)
+6) enjoy getting less, more real comments :-)
 
 Credits: thanks to Tim Peterson for specs, ideas, and actual updates on the code.
 
