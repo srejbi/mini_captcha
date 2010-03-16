@@ -1,0 +1,13 @@
+<!-- MiniCaptcha - Mini Captcha subform for image display and token input -->
+<div class='mini_captcha'>
+  <div class='half first'>
+    <label id='mini_captcha_label'><%= @mini_captcha_displays[:label] %></label>
+    <div class='mini_captcha_token'>
+      <%= @mini_captcha_displays[:token] %>
+      <%= @mini_captcha_displays[:hash] %>
+    </div>
+  </div>
+  <div class='mini_captcha_image half'>
+    <%= @mini_captcha_displays[:image] %>
+  </div>
+</div>

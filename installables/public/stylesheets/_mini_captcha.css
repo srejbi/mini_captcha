@@ -1,0 +1,21 @@
+/* 
+    Document   : _mini_captcha.css
+    Created on : Feb 17, 2010, 5:48:02 PM
+    Author     : gy.schreiber@mobility.hu
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+
+   define your own styles for
+      - mini_captcha,
+      - mini_captcha_image,
+      - mini_captcha_label,
+      - mini_captcha_token here
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.mini_captcha_image img {border: 1px solid #999;width:150px;height:40px;background-color:#fff;padding:5px 10px;}
+
