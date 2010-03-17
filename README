@@ -36,6 +36,6 @@ map.mini_captcha '/mini_captcha/:action', :controller => 'mini_captcha', :action
 
 6) enjoy getting less, more real comments :-)
 
-Credits: thanks to Tim Peterson for specs, ideas, and actual updates on the code.
+Credits: thanks to milkfarm (http://github.com/milkfarm) for specs, ideas, and actual updates on the code.
 
 
