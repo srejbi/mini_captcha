@@ -69,8 +69,8 @@ module MiniCaptcha
       cleanup
       # generate new token, image and hash
       token = generate_token
-      @image = generate_image(token)
       @hash = generate_hash(token)
+      @image = generate_image(token)
     end
 
     # checks a token against a hash
@@ -113,7 +113,7 @@ module MiniCaptcha
     # <tt>token</tt> - string containing the text to be printed
     def generate_image(token)
       # use imagemagick to create image from the token text
-      imagepath = Rails.root.join(MiniCaptcha.image_dir, "#{generate_hash(token)}.#{MiniCaptcha.image_format}")
+      imagepath = Rails.root.join(MiniCaptcha.image_dir, "#{self.hash}.#{MiniCaptcha.image_format}")
       tokenimage = Magick::Image.new(token.length*48/1.5,50)
       tokentext = Magick::Draw.new
 
